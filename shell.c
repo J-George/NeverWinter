@@ -14,7 +14,7 @@ int main(int argc, char* argv[], char* envp[])
 		int f;
 		for(f = 0;f <=256; f++)
 		{
-			c[f] = f;
+			c[f] = 0;
 		}
 
 		printf("\n[MY_SHELL  ]:- ");
@@ -25,16 +25,12 @@ int main(int argc, char* argv[], char* envp[])
 			if(c[l] =='\n')
 			break;
 		}
-		break;
-	}
-	int l;
-	for (l = 0; l <=256 ; l++)
+	
+	int s;
+	for (s = 0; s <=256 ; s++)
 	{
-		putchar(c[l]);
-		printf(" ");
+		putchar(c[s]);
 	} 
-	printf("This is out");
-	exit(0);
 	
         	//Store every word as an array of charachters to parse later
 		cptr = strtok(c, delimiters);
@@ -47,7 +43,7 @@ int main(int argc, char* argv[], char* envp[])
 			break;
 		}			
 		//printf(cptr);	
-	
+	}
 		/*
 		//Once the words are stored, we can start the fork, exec and wait
 		int rc = fork();
