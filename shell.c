@@ -6,17 +6,13 @@
 int main(int argc, char* argv[], char* envp[])
 {
 	char c[256];
+	char* parameters[10];
 	char *cptr;
 	const char delimiters[2] = " ";
 	printf("Welcome to the NeverWinter Shell!");
         while(1)
 	{
-		int f;
-		for(f = 0;f <=256; f++)
-		{
-			c[f] = 0;
-		}
-
+		
 		printf("\n[MY_SHELL  ]:- ");
 		int l;
         	for (l = 0; l <= 256; l++)
@@ -26,22 +22,27 @@ int main(int argc, char* argv[], char* envp[])
 			break;
 		}
 	
-	int s;
-	for (s = 0; s <=256 ; s++)
-	{
-		putchar(c[s]);
-	} 
-	
+
+
         	//Store every word as an array of charachters to parse later
-		cptr = strtok(c, delimiters);
-		printf(cptr);
-		while(cptr!= NULL)
+		cptr = strtok(c, " ");
+		int count = 0;
+		while (cptr != NULL)
 		{
+			//cptr = strtok(NULL, " ");
+			parameters[count] = cptr;
+			count++;
 			cptr = strtok(NULL, " ");
-		        printf(cptr);
-			if(cptr == '\n')
-			break;
-		}			
+		}
+		printf("Amount of parameters: %d\n", count);
+		int x = 0;
+		for (x = 0; x <= count; x++)
+		{
+			printf("This is string %d:", x);
+			printf(parameters[x]);
+			printf("\n");
+		}
+
 		//printf(cptr);	
 	}
 		/*
