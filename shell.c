@@ -8,11 +8,13 @@ int main(int argc, char* argv[], char* envp[])
 	char c[256];
 	char* parameters[10];
 	char *cptr;
+	int parameterCount = 0;
 	const char delimiters[2] = " ";
 	printf("Welcome to the NeverWinter Shell!");
         while(1)
 	{
-		
+
+		parameterCount = 0;
 		printf("\n[MY_SHELL  ]:- ");
 		int l;
         	for (l = 0; l <= 256; l++)
@@ -26,24 +28,22 @@ int main(int argc, char* argv[], char* envp[])
 
         	//Store every word as an array of charachters to parse later
 		cptr = strtok(c, " ");
-		int count = 0;
 		while (cptr != NULL)
 		{
 			//cptr = strtok(NULL, " ");
-			parameters[count] = cptr;
-			count++;
+			parameters[parameterCount] = cptr;
+			parameterCount++;
 			cptr = strtok(NULL, " ");
 		}
-		printf("Amount of parameters: %d\n", count);
+		printf("Amount of parameters: %d\n", parameterCount);
 		int x = 0;
-		for (x = 0; x <= count; x++)
+		for (x=0; x<parameterCount ;x++)
 		{
-			printf("This is string %d:", x);
+			printf("This is string %d: ", x);
 			printf(parameters[x]);
 			printf("\n");
 		}
-
-		//printf(cptr);	
+//printf(cptr);	
 	}
 		/*
 		//Once the words are stored, we can start the fork, exec and wait
