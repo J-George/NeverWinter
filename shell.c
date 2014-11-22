@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[], char* envp[])
 {
-	char c[256];
+	char c[256] = "\0";
 	char* parameters[10];
 	char *cptr;
 	int parameterCount = 0;
@@ -13,7 +13,12 @@ int main(int argc, char* argv[], char* envp[])
 	printf("Welcome to the NeverWinter Shell!");
         while(1)
 	{
-
+		int z;
+		for (z=0; z<=parameterCount+1; z++)
+		{
+		c[z] = "\0";
+		parameters[z] = "\0";
+		}
 		parameterCount = 0;
 		printf("\n[MY_SHELL  ]:- ");
 		int l;
@@ -41,7 +46,7 @@ int main(int argc, char* argv[], char* envp[])
 		{
 			printf("This is string %d: ", x);
 			printf(parameters[x]);
-			printf("\n");
+			printf(" :End\n");
 		}
 //printf(cptr);	
 	}
