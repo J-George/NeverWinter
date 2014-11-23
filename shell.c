@@ -9,11 +9,12 @@ int main(int argc, char* argv[], char* envp[])
 	char* parameters[256];
 	char *cptr;
 	int parameterCount = 0;
-	//const char delimiters[2] = " ";
 	printf("Welcome to the NeverWinter Shell!");
         while(1)
 	{
 		int z;
+
+		//Loop that resets arrays to null
 		for (z=0; z<=256; z++)
 		{
 			c[z] = '\0';
@@ -22,6 +23,8 @@ int main(int argc, char* argv[], char* envp[])
 		parameterCount = 0;
 		printf("\n[MY_SHELL  ]:- ");
 		int l;
+
+		//Loop that reads in input
         	for (l = 0; l <= 256; l++)
 		{
 		
@@ -32,39 +35,37 @@ int main(int argc, char* argv[], char* envp[])
 				break;
 			}
 		}
-        	//Store every word as an array of charachters to parse later
+
+        	//Store every word as an array of strings to parse later
 		cptr = strtok(c, " ");
 		while (cptr != NULL)
 		{
-			//cptr = strtok(NULL, " ");
+
 			parameters[parameterCount] = cptr;
 			parameterCount++;
 			cptr = strtok(NULL, " ");
-
 		}
+
+		//Fork
 		int rc = fork();
-		printf("Reached");
-		exec(parameters[1]);
+		//if Fork fails
 		if(rc < 0)
 		{
 			printf("Oops! Something went wrong!");
 			exit(0);
 		}
 
-		else if(rc == 0)	// Now we can execute the command that we get from the array of charachters that we stored
+		else if(rc == 0) //Code for child to run
 		{
-			printf("Executing command: \n");
-			exec(parameters[1]);
+			printf("Child Runs\n");
+			return(0);
 		}
-		
-		else if(rc > 0)		//Show wait() and then run MY_SHELL again
+		else if(rc > 0)	//Parent waits for child to finish running then restars while loop
 		{
+			printf("Parent starts waiting\n");
 			int wt = wait();
-			printf("[MY_SHELL  ]:- ");
-			
+			printf("Parent is finished waiting\n");	
 		}
 		printf("\n");
-
-		return 0;
 	}
 }
