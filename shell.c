@@ -24,9 +24,13 @@ int main(int argc, char* argv[], char* envp[])
 		int l;
         	for (l = 0; l <= 256; l++)
 		{
+		
 			c[l] = getchar();
-			if(c[l] =='\n')
-			break;
+			if(c[l] == '\n')
+			{
+			 	c[l] = '\0';
+				break;
+			}
 		}
 	
 
