@@ -67,12 +67,20 @@ int main(int argc, char* argv[], char* envp[])
 			//This will be the final path to the program that we will pass to execv
                         char prog[512];
                         //First we copy a /bin/ to prog
-                        strcpy(prog, path);
+                        strcpy(prog,"");
                         //Then we concancate the program name to /bin/
                         //If the program name is ls, then it'll be /bin/ls
                         strcat(prog, parameters[0]);
 			//Then execute the damn program
-			execv(prog,parameters);
+			int check = execv(prog,parameters);
+			printf("test");
+			char prog2[512];
+			if (check == -1)
+			{
+			strcpy(prog2, path);
+			strcat(prog2, parameters[0]);
+			execv(prog2, parameters);
+			}				
 			return(0);
 		}
 		else if(rc > 0)	//Parent waits for child to finish running then restars while loop
