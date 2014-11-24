@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-
+#include <sys/wait.h>
 int main(int argc, char* argv[], char* envp[])
 {
 	char c[256] = "\0";
 	char* parameters[256];
 	char *cptr;
+	char* path = "/bin/";
 	int parameterCount = 0;
-	printf("Welcome to the NeverWinter Shell!");
+	printf("Welcome to the NeverWinter Shell!\n");
         while(1)
 	{
 		int z;
@@ -20,14 +21,15 @@ int main(int argc, char* argv[], char* envp[])
 			c[z] = '\0';
 			parameters[z] = '\0';
 		}
+		
+		//Display the prompt message
 		parameterCount = 0;
-		printf("\n[MY_SHELL  ]:- ");
+		printf("[BLUE_SHELL  ]:- ");
 		int l;
 
 		//Loop that reads in input
         	for (l = 0; l <= 256; l++)
-		{
-		
+		{		
 			c[l] = getchar();
 			if(c[l] == '\n')
 			{
@@ -40,11 +42,15 @@ int main(int argc, char* argv[], char* envp[])
 		cptr = strtok(c, " ");
 		while (cptr != NULL)
 		{
-
 			parameters[parameterCount] = cptr;
 			parameterCount++;
-			cptr = strtok(NULL, " ");
+			cptr = strtok(NULL, " ");	
 		}
+		
+		int ret;
+		ret = strcmp(parameters[0],"exit");
+		if(ret == 0)
+		exit(0);
 
 		//Fork
 		int rc = fork();
@@ -57,15 +63,24 @@ int main(int argc, char* argv[], char* envp[])
 
 		else if(rc == 0) //Code for child to run
 		{
-			printf("Child Runs\n");
+			//printf("Child Runs\n");
+			//This will be the final path to the program that we will pass to execv
+                        char prog[512];
+                        //First we copy a /bin/ to prog
+                        strcpy(prog, path);
+                        //Then we concancate the program name to /bin/
+                        //If the program name is ls, then it'll be /bin/ls
+                        strcat(prog, parameters[0]);
+			//Then execute the damn program
+			execv(prog,parameters);
 			return(0);
 		}
 		else if(rc > 0)	//Parent waits for child to finish running then restars while loop
 		{
-			printf("Parent starts waiting\n");
-			int wt = wait();
-			printf("Parent is finished waiting\n");	
+			//printf("Parent starts waiting\n");
+			wait(NULL);
+			//printf("Parent is finished waiting\n");	
 		}
-		printf("\n");
+		//printf("\n");
 	}
 }
