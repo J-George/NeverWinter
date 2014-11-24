@@ -8,18 +8,21 @@ int main(int argc, char* argv[], char* envp[])
 	char c[256] = "\0";
 	char* parameters[256];
 	char *cptr;
-	char* path = "/bin/";
 	int parameterCount = 0;
-	printf("Welcome to the NeverWinter Shell!\n");
+	printf(" //----\\   ||       ||   ||  ||=====     //======  ||    ||  ||====  ||      ||\n");
+	printf(" ||    ||  ||       ||   ||  ||          ||        ||    ||  ||      ||      ||\n");
+	printf(" ||----    ||       ||   ||  ||=====     \\\\----\\\\  ||====||  ||====  ||      ||\n");
+	printf(" ||    ||  ||       ||   ||  ||                ||  ||    ||  ||      ||      ||\n");
+	printf(" ||____/   ||=====  \\\\---//  ||=====     ======//  ||    ||  ||====  ||====  ||====\n\n");
         while(1)
 	{
 		int z;
-
+ 		char* path = "/bin/";
 		//Loop that resets arrays to null
 		for (z=0; z<=256; z++)
 		{
 			c[z] = '\0';
-			parameters[z] = '\0';
+			parameters[z] = NULL;
 		}
 		
 		//Display the prompt message
@@ -47,6 +50,7 @@ int main(int argc, char* argv[], char* envp[])
 			cptr = strtok(NULL, " ");	
 		}
 		
+		//Exiting out of the shell		
 		int ret;
 		ret = strcmp(parameters[0],"exit");
 		if(ret == 0)
@@ -72,7 +76,14 @@ int main(int argc, char* argv[], char* envp[])
                         //If the program name is ls, then it'll be /bin/ls
                         strcat(prog, parameters[0]);
 			//Then execute the damn program
-			execv(prog,parameters);
+			int retc = execv(prog,parameters);
+			if (retc == -1)
+			{
+				strcpy(prog,"");
+				strcat(prog,parameters[0]);
+				execv(prog,parameters);
+				return 0;
+			}
 			return(0);
 		}
 		else if(rc > 0)	//Parent waits for child to finish running then restars while loop
