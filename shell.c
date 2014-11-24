@@ -3,21 +3,27 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+
+#define COLOR_BLUE	"\x1b[34m"
+#define COLOR_RESET	"\x1b[0m" 
+
 int main(int argc, char* argv[], char* envp[])
 {
 	char c[256] = "\0";
 	char* parameters[256];
 	char *cptr;
 	int parameterCount = 0;
-	printf(" //----\\   ||       ||   ||  ||=====     //======  ||    ||  ||====  ||      ||\n");
+	printf(COLOR_BLUE"\n //----\\   ||       ||   ||  ||=====     //======  ||    ||  ||====  ||      ||\n");
 	printf(" ||    ||  ||       ||   ||  ||          ||        ||    ||  ||      ||      ||\n");
 	printf(" ||----    ||       ||   ||  ||=====     \\\\----\\\\  ||====||  ||====  ||      ||\n");
 	printf(" ||    ||  ||       ||   ||  ||                ||  ||    ||  ||      ||      ||\n");
 	printf(" ||____/   ||=====  \\\\---//  ||=====     ======//  ||    ||  ||====  ||====  ||====\n\n");
+	printf(COLOR_RESET);
         while(1)
 	{
 		int z;
  		char* path = "/bin/";
+		char* envList[] = {"HOME=/root", "PATH=/bin:/sbin", NULL};
 		//Loop that resets arrays to null
 		for (z=0; z<=256; z++)
 		{
@@ -81,7 +87,7 @@ int main(int argc, char* argv[], char* envp[])
 			{
 				strcpy(prog,"");
 				strcat(prog,parameters[0]);
-				execv(prog,parameters);
+				execve(prog,parameters,envList);
 				return 0;
 			}
 			return(0);
