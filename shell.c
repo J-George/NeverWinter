@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 
+
 #define COLOR_BLUE	"\x1b[34m"
 #define COLOR_RESET	"\x1b[0m" 
 
@@ -12,6 +13,7 @@ int main(int argc, char* argv[], char* envp[])
 	char c[256] = "\0";
 	char* parameters[256];
 	char *cptr;
+        char *piping = "|";
 	int parameterCount = 0;
 	printf(COLOR_BLUE"\n //----\\   ||       ||   ||  ||=====     //======  ||    ||  ||====  ||      ||\n");
 	printf(" ||    ||  ||       ||   ||  ||          ||        ||    ||  ||      ||      ||\n");
@@ -46,7 +48,6 @@ int main(int argc, char* argv[], char* envp[])
 				break;
 			}
 		}
-
         	//Store every word as an array of strings to parse later
 		cptr = strtok(c, " ");
 		while (cptr != NULL)
@@ -55,7 +56,6 @@ int main(int argc, char* argv[], char* envp[])
 			parameterCount++;
 			cptr = strtok(NULL, " ");	
 		}
-		
 		//Exiting out of the shell		
 		int ret;
 		ret = strcmp(parameters[0],"exit");
@@ -81,7 +81,16 @@ int main(int argc, char* argv[], char* envp[])
                         //Then we concancate the program name to /bin/
                         //If the program name is ls, then it'll be /bin/ls
                         strcat(prog, parameters[0]);
-			//Then execute the damn program
+			//Then execute the damn progra
+			int x;
+			for (x = 0; x <= 256; x++)
+			{
+				if (parameters[x] == piping) printf("hi");
+ 			//	{
+				//	char* var = $(parameters[0]);
+				//	exit(0);
+			//	}
+			}
 			int retc = execv(prog,parameters);
 			if (retc == -1)
 			{
@@ -90,7 +99,8 @@ int main(int argc, char* argv[], char* envp[])
 				execve(prog,parameters,envList);
 				return 0;
 			}
-			return(0);
+		
+			return 0;
 		}
 		else if(rc > 0)	//Parent waits for child to finish running then restars while loop
 		{
