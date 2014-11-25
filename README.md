@@ -16,6 +16,7 @@ For the shell project, our team has decided to move forward with implementing se
 4. We also plan to have redirection as a feature of our shell. This will allow user to redirect output to files, rather than the command prompt itself. This can be useful for saving output for later through the use of saved files, where the prompt itself can get cluttered.
 
 5. Our final planned feature is the wildcard feature. Using an asterisk, the shell will recognize this as a special input and create a listing of all items in the current folder, all of which will be used as input for the current program.
+**UPDATE: adding the glob file is much harder than anticipated.. Feature will now be allowing arrow key movement.
 
 Currently, we have the barebones structure of our shell up on the repository. Within the next few weeks we plan to have all these features implemented and working correctly and are planning to divide up the feature coding between our group members. 
 
