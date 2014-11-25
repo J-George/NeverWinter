@@ -8,6 +8,7 @@
 #include <readline/history.h>
 #include <stdbool.h>
 
+static char *line_read = (char *)NULL;
 
 #define COLOR_BLUE	"\x1b[34m"
 #define COLOR_RESET	"\x1b[0m" 
@@ -26,7 +27,7 @@ int main(int argc, char* argv[], char* envp[])
 
 	bool isPiping = false, isRedirecting = false, isWildcard = false;
 	char *pipeSearch, *redirectionSearch, *wildcardSearch;
-	int  pipingPosition[256], redirectionPosition[256], wildcardPosition[256];
+	int  pipingPosition[64], redirectionPosition[64], wildcardPosition[64];
 
 
 	char* c;
@@ -42,8 +43,9 @@ int main(int argc, char* argv[], char* envp[])
 		int z;
  		char* path = "/bin/";
 		char* envList[] = {"HOME=/root", "PATH=/bin:/sbin", NULL};
+
 		//Loop that resets arrays to null
-		for (z=0; z<=sizeof(c); z++)
+		for (z=0; z<= sizeof(c); z++)
 		{
 			c[z] = '\0';
 			parameters[z] = NULL;
@@ -51,7 +53,17 @@ int main(int argc, char* argv[], char* envp[])
 		parameterCount = 0;
 		
 		//Display and read the message
+		int reg;
 		c = readline(COLOR_BLUE"[BLUE_SHELL  ]:- "COLOR_RESET);
+		reg = strcmp(c,"");
+		while (reg == 0)
+		{
+			c = readline(COLOR_BLUE"[BULE_SHELL  ]:- "COLOR_RESET);
+			reg = strcmp(c,"");
+			if (reg != 0)
+			break;
+		}
+		add_history(c);
 
         	//Store every word as an array of strings to parse later
 		cptr = strtok(c, " ");
@@ -62,7 +74,7 @@ int main(int argc, char* argv[], char* envp[])
 			cptr = strtok(NULL, " ");	
 	 	}
 
-		/*// Allowing for detection of piping, redirection and wildcard implementation
+		// Allowing for detection of piping, redirection and wildcard implementation
 		int i, j = 0, k = 0, m = 0;
 		for (i = 0; i < parameterCount; i++)
 		{
@@ -91,7 +103,7 @@ int main(int argc, char* argv[], char* envp[])
 				m++;
 			}
 
-		}*/
+		}
 
 		//debugging.. set to 1 to see all the arguments on each seperate line
 		if(0)
@@ -124,7 +136,7 @@ int main(int argc, char* argv[], char* envp[])
 		{
 			//printf("Child Runs\n");
 			//This will be the final path to the program that we will pass to execv
-                        char prog[512];
+                        char prog[1024];
                         //First we copy a /bin/ to prog
                         strcpy(prog, path);
                         //Then we concancate the program name to /bin/
