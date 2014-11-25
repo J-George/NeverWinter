@@ -90,7 +90,9 @@ int main(int argc, char* argv[], char* envp[])
 			{
 				strcpy(prog,"");
 				strcat(prog,parameters[0]);
-				execve(prog,parameters,envList);
+				retc = execve(prog,parameters,envList);
+				if(retc == -1)
+				printf("The process %s could not be recognized.\n",c);
 				return 0;
 			}
 			return(0);
