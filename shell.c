@@ -9,16 +9,18 @@
 
 int main(int argc, char* argv[], char* envp[])
 {
-	char c[256] = "\0";
-	char* parameters[256];
-	char *cptr;
-	int parameterCount = 0;
 	printf(COLOR_BLUE"\n //----\\   ||       ||   ||  ||=====     //======  ||    ||  ||====  ||      ||\n");
 	printf(" ||    ||  ||       ||   ||  ||          ||        ||    ||  ||      ||      ||\n");
 	printf(" ||----    ||       ||   ||  ||=====     \\\\----\\\\  ||====||  ||====  ||      ||\n");
 	printf(" ||    ||  ||       ||   ||  ||                ||  ||    ||  ||      ||      ||\n");
 	printf(" ||____/   ||=====  \\\\---//  ||=====     ======//  ||    ||  ||====  ||====  ||====\n\n");
 	printf(COLOR_RESET);
+
+	char c[256] = "\0";
+	char* parameters[256];
+	char *cptr;
+	int parameterCount = 0;
+
         while(1)
 	{
 		int z;
@@ -33,7 +35,7 @@ int main(int argc, char* argv[], char* envp[])
 		
 		//Display the prompt message
 		parameterCount = 0;
-		printf("[BLUE_SHELL  ]:- ");
+		printf(COLOR_BLUE"[BLUE_SHELL  ]:- "COLOR_RESET);
 		int l;
 
 		//Loop that reads in input
@@ -71,7 +73,8 @@ int main(int argc, char* argv[], char* envp[])
 			exit(0);
 		}
 
-		else if(rc == 0) //Code for child to run
+		//Child Code
+		else if(rc == 0) 
 		{
 			//printf("Child Runs\n");
 			//This will be the final path to the program that we will pass to execv
@@ -82,7 +85,7 @@ int main(int argc, char* argv[], char* envp[])
                         //If the program name is ls, then it'll be /bin/ls
                         strcat(prog, parameters[0]);
 			//Then execute the damn program
-			int retc = execv(prog,parameters);
+			int retc = execve(prog,parameters,envList);
 			if (retc == -1)
 			{
 				strcpy(prog,"");
@@ -92,12 +95,12 @@ int main(int argc, char* argv[], char* envp[])
 			}
 			return(0);
 		}
-		else if(rc > 0)	//Parent waits for child to finish running then restars while loop
+
+		//Parent Code
+		else if(rc > 0)	
 		{
-			//printf("Parent starts waiting\n");
-			wait(NULL);
-			//printf("Parent is finished waiting\n");	
+			wait(NULL);	
 		}
-		//printf("\n");
+		
 	}
 }
