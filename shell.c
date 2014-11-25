@@ -10,17 +10,19 @@
 
 int main(int argc, char* argv[], char* envp[])
 {
-	char c[256] = "\0";
-	char* parameters[256];
-	char *cptr;
-        char *piping = "|";
-	int parameterCount = 0;
+
 	printf(COLOR_BLUE"\n //----\\   ||       ||   ||  ||=====     //======  ||    ||  ||====  ||      ||\n");
 	printf(" ||    ||  ||       ||   ||  ||          ||        ||    ||  ||      ||      ||\n");
 	printf(" ||----    ||       ||   ||  ||=====     \\\\----\\\\  ||====||  ||====  ||      ||\n");
 	printf(" ||    ||  ||       ||   ||  ||                ||  ||    ||  ||      ||      ||\n");
 	printf(" ||____/   ||=====  \\\\---//  ||=====     ======//  ||    ||  ||====  ||====  ||====\n\n");
 	printf(COLOR_RESET);
+
+	char c[256] = "\0";
+	char* parameters[256];
+	char *cptr;
+	int parameterCount = 0;
+	char *piping = "|";
         while(1)
 	{
 		int z;
@@ -35,7 +37,7 @@ int main(int argc, char* argv[], char* envp[])
 		
 		//Display the prompt message
 		parameterCount = 0;
-		printf("[BLUE_SHELL  ]:- ");
+		printf(COLOR_BLUE"[BLUE_SHELL  ]:- "COLOR_RESET);
 		int l;
 
 		//Loop that reads in input
@@ -71,7 +73,8 @@ int main(int argc, char* argv[], char* envp[])
 			exit(0);
 		}
 
-		else if(rc == 0) //Code for child to run
+		//Child Code
+		else if(rc == 0) 
 		{
 			//printf("Child Runs\n");
 			//This will be the final path to the program that we will pass to execv
@@ -91,23 +94,26 @@ int main(int argc, char* argv[], char* envp[])
 				//	exit(0);
 			//	}
 			}
-			int retc = execv(prog,parameters);
+			//Then execute the damn program
+			int retc = execve(prog,parameters,envList);
 			if (retc == -1)
 			{
 				strcpy(prog,"");
 				strcat(prog,parameters[0]);
-				execve(prog,parameters,envList);
+				retc = execve(prog,parameters,envList);
+				if(retc == -1)
+				printf("The process %s could not be recognized.\n",c);
 				return 0;
 			}
 		
 			return 0;
 		}
-		else if(rc > 0)	//Parent waits for child to finish running then restars while loop
+
+		//Parent Code
+		else if(rc > 0)	
 		{
-			//printf("Parent starts waiting\n");
-			wait(NULL);
-			//printf("Parent is finished waiting\n");	
+			wait(NULL);	
 		}
-		//printf("\n");
+		
 	}
 }
