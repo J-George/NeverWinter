@@ -2,6 +2,7 @@ NeverWinter
 ===========
 
 Operating Systems Project Initial Write-Up
+
 Team members: Marc Hosang, Justin George, Priom Chowdhury, Nikhil Sharma, Daniel Comeau
 
 For the shell project, our team has decided to move forward with implementing several features, which will be listed and described as follows.
