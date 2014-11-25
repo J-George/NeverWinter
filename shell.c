@@ -17,14 +17,14 @@ int main(int argc, char* argv[], char* envp[])
 	printf(" ||    ||  ||       ||   ||  ||                ||  ||    ||  ||      ||      ||\n");
 	printf(" ||____/   ||=====  \\\\---//  ||=====     ======//  ||    ||  ||====  ||====  ||====\n\n");
 	printf(COLOR_RESET);
-	bool isPiping = false, isRedirecting = false;
-	char *pipeSearch, *redirectionSearch;
-	int  pipingPosition[256], redirectionPosition[256];
+	bool isPiping = false, isRedirecting = false, isWildcard = false;
+	char *pipeSearch, *redirectionSearch, *wildcardSearch;
+	int  pipingPosition[256], redirectionPosition[256], wildcardPosition[256];
 	char c[256] = "\0";
 	char* parameters[256];
 	char *cptr;
 	int parameterCount = 0;
-	char piping = '|', redirection = '>';
+	char piping = '|', redirection = '>', wildcard  ='*';
         while(1)
 	{
 		int z;
@@ -59,7 +59,7 @@ int main(int argc, char* argv[], char* envp[])
 			parameterCount++;
 			cptr = strtok(NULL, " ");	
 	 	}
-		int i, j = 0, k = 0;
+		int i, j = 0, k = 0, m = 0;
 		for (i = 0; i < parameterCount; i++)
 		{
 			pipeSearch = strchr(parameters[i],piping);
@@ -78,6 +78,15 @@ int main(int argc, char* argv[], char* envp[])
 				isRedirecting = true;
 				k++;
 			}
+			wildcardSearch = strchr(parameters[i],wildcard);
+			if (wildcardSearch!= NULL)
+			{	
+				wildcardPosition[m] = i;
+				printf("* in position %d\n", wildcardPosition[m]);
+				isWildcard = true;
+				m++;
+			}
+
 		}
 		//Exiting out of the shell		
 		int ret;
