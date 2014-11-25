@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <stdbool.h>
 
 
@@ -21,10 +22,14 @@ int main(int argc, char* argv[], char* envp[])
 	printf(" ||    ||  ||       ||   ||  ||                ||  ||    ||  ||      ||      ||\n");
 	printf(" ||____/   ||=====  \\\\---//  ||=====     ======//  ||    ||  ||====  ||====  ||====\n\n");
 	printf(COLOR_RESET);
+
+
 	bool isPiping = false, isRedirecting = false, isWildcard = false;
 	char *pipeSearch, *redirectionSearch, *wildcardSearch;
 	int  pipingPosition[256], redirectionPosition[256], wildcardPosition[256];
-	char c[256] = "\0";
+
+
+	char* c;
 	char* parameters[256];
 	char *cptr;
 	int parameterCount = 0;
@@ -38,26 +43,16 @@ int main(int argc, char* argv[], char* envp[])
  		char* path = "/bin/";
 		char* envList[] = {"HOME=/root", "PATH=/bin:/sbin", NULL};
 		//Loop that resets arrays to null
-		for (z=0; z<=256; z++)
+		for (z=0; z<=sizeof(c); z++)
 		{
 			c[z] = '\0';
 			parameters[z] = NULL;
 		}
-		
-		//Display the prompt message
 		parameterCount = 0;
-		printf(COLOR_BLUE"[BLUE_SHELL  ]:- "COLOR_RESET);
-		int l;
-		 //Loop that reads in input
-        	for (l = 0; l <= 256; l++)
-		{		
-			c[l] = getchar();
-			if(c[l] == '\n')
-			{
-			 	c[l] = '\0';
-				break;
-			}
-		}
+		
+		//Display and read the message
+		c = readline(COLOR_BLUE"[BLUE_SHELL  ]:- "COLOR_RESET);
+
         	//Store every word as an array of strings to parse later
 		cptr = strtok(c, " ");
 		while (cptr != NULL)
@@ -66,6 +61,8 @@ int main(int argc, char* argv[], char* envp[])
 			parameterCount++;
 			cptr = strtok(NULL, " ");	
 	 	}
+
+		/*// Allowing for detection of piping, redirection and wildcard implementation
 		int i, j = 0, k = 0, m = 0;
 		for (i = 0; i < parameterCount; i++)
 		{
@@ -94,10 +91,9 @@ int main(int argc, char* argv[], char* envp[])
 				m++;
 			}
 
-		}
+		}*/
 
-
-		//debugging
+		//debugging.. set to 1 to see all the arguments on each seperate line
 		if(0)
 		{	
 			int s = 0;
@@ -108,7 +104,6 @@ int main(int argc, char* argv[], char* envp[])
 			}		
 		}
 		
-
 		//Exiting out of the shell		
 		int ret;
 		ret = strcmp(parameters[0],"exit");
