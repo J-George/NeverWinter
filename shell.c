@@ -59,22 +59,24 @@ int main(int argc, char* argv[], char* envp[])
 			parameterCount++;
 			cptr = strtok(NULL, " ");	
 	 	}
-		int x;
-		for (x = 0; x < parameterCount; x++)
+		int i, j = 0, k = 0;
+		for (i = 0; i < parameterCount; i++)
 		{
-			pipeSearch = strchr(parameters[x],piping);
+			pipeSearch = strchr(parameters[i],piping);
 			if (pipeSearch!= NULL)
 			{
-				pipingPosition[x] = x;
-				printf("| in position %d\n", pipingPosition[x]);
+				pipingPosition[j] = i;
+				printf("| in position %d\n", pipingPosition[j]);
 				isPiping = true;
+				j++;
 			}
-			redirectionSearch = strchr(parameters[x],redirection);
+			redirectionSearch = strchr(parameters[i],redirection);
 			if (redirectionSearch!= NULL)
 			{
-				redirectionPosition[x] = x;
-				printf("> in position %d\n", redirectionPosition[x] );
+				redirectionPosition[k] = i;
+				printf("> in position %d\n", redirectionPosition[k]);
 				isRedirecting = true;
+				k++;
 			}
 		}
 		//Exiting out of the shell		
@@ -103,8 +105,15 @@ int main(int argc, char* argv[], char* envp[])
                         //Then we concancate the program name to /bin/
                         //If the program name is ls, then it'll be /bin/ls
                         strcat(prog, parameters[0]);
+			if (isPiping == true)
+			{
+				//Piping code
+			}
+			if (isRedirecting == true)
+			{
+				//Redirection code
+			}
 			//Then execute the damn progra
-			//Then execute the damn program
 			int retc = execve(prog,parameters,envList);
 			if (retc == -1)
 			{
