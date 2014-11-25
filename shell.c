@@ -3,9 +3,12 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <readline/readline.h>
+
 
 #define COLOR_BLUE	"\x1b[34m"
 #define COLOR_RESET	"\x1b[0m" 
+
 
 int main(int argc, char* argv[], char* envp[])
 {
@@ -20,6 +23,7 @@ int main(int argc, char* argv[], char* envp[])
 	char* parameters[256];
 	char *cptr;
 	int parameterCount = 0;
+	
 
         while(1)
 	{
@@ -57,6 +61,17 @@ int main(int argc, char* argv[], char* envp[])
 			parameterCount++;
 			cptr = strtok(NULL, " ");	
 		}
+
+		//debugging
+		if(0)
+		{	
+			int s = 0;
+			while(s != parameterCount)
+			{
+				printf("%s\n",parameters[s]);
+				s++;
+			}		
+		}
 		
 		//Exiting out of the shell		
 		int ret;
@@ -90,7 +105,7 @@ int main(int argc, char* argv[], char* envp[])
 			{
 				strcpy(prog,"");
 				strcat(prog,parameters[0]);
-				retc = execve(prog,parameters,envList);
+				retc = execv(prog,parameters);
 				if(retc == -1)
 				printf("The process %s could not be recognized.\n",c);
 				return 0;
