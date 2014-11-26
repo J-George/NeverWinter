@@ -9,6 +9,85 @@
 #define COLOR_BLUE	"\x1b[34m"
 #define COLOR_RESET	"\x1b[0m" 
 
+/* the current commented out code in regards to piping is a failed attempt to
+read from input command, unsure how to fix, if fixed these next 2 lines 
+can be commented, currently it pipes command1 into command2, does not return to shell after piping, it seems command2 doesn't close 
+*/
+char *command1[] = { "/bin/ls", "-a", "/", 0 };
+char *command2[] = { "/usr/bin/tr", "a-z", "A-Z", 0 };
+
+
+void pipeIn(int command[]/*, char* command1[], char* parameters*/)
+{
+	int pid = fork();
+	if (pid  == 0) //child
+	{
+		dup2(command[1],1);
+		close(command[0]);
+		int ret = execvp(command1[0], command1);
+		if (ret = -1)
+		{
+		/*	char* otherPath = "/usr/bin";
+			strcat(otherPath, parameters);
+			strcpy(commands[0], otherPath);
+			ret = execvp(commands[0], commands);
+			if (ret = -1)
+			{*/
+				printf("Path not found");
+				return;
+		//	}
+		}	
+		close(1);
+	}
+	if (pid < 0)
+	{
+		printf("fork error");
+		exit(1);
+	}
+	if (pid > 0)
+	{
+		wait(NULL);
+	}
+}
+
+void pipeOut(int command[]/*, char* command2[], char* parameters*/) 
+{
+	int pid = fork();
+	if (pid == 0) //child
+	{
+		dup2(command[0],0);
+		close(command[1]);
+		int ret = execvp(command2[0], command2);
+		if (ret = -1)
+		{
+		/*	char* otherPath = "/usr/bin";
+			strcat(otherPath, parameters);
+			strcpy(commands[0], otherPath);
+			ret = execvp(commands[0], commands);
+			if (ret = -1)
+			{ */
+				printf("Path not found");
+				return;
+		//	}
+		}
+		close(0);
+		close(1);
+		close(command[0]);
+		close(command[1]);	
+}
+	if (pid < 0)
+        {
+                printf("fork error");
+                exit(1);
+        }
+        if (pid > 0)
+        {
+                wait(NULL);
+		close(command[0]);
+		close(command[1]);
+        }
+}
+
 int main(int argc, char* argv[], char* envp[])
 {
 
@@ -66,10 +145,25 @@ int main(int argc, char* argv[], char* envp[])
 			pipeSearch = strchr(parameters[i],piping);
 			if (pipeSearch!= NULL)
 			{
-				pipingPosition[j] = i;
-				printf("| in position %d\n", pipingPosition[j]);
-				isPiping = true;
-				j++;
+				//pipingPosition[j] = i;
+			/*        char* command1[5];// command[0] is the command, everyone after should be the parameters of that command, such -a for ls, or for tr(translate) it would be what you want to translate to, like change to all caps, getting this is the issue  
+				char* command2[5];
+				command1[0] = path;
+				command2[0] = path;
+				strcat(command1[0], parameters[pipingPosition[j]-1]);
+			        strcat(command2[0], parameters[pipingPosition[j]+1]);
+				//isPiping = true;
+			*/
+				int command[2];
+				pipe(command);
+				pipeIn(command/* , command1, parameters[pipingPosition[j]-1]*/);
+				pipeOut(command/*, command2, parameters[pipingPosition[j]+1]*/);
+				close(command[0]);
+				close(command[1]);
+				close(0);
+				close(1);
+				printf("hi");				
+execvp(argv[0], argv);
 			}
 			redirectionSearch = strchr(parameters[i],redirection);
 			if (redirectionSearch!= NULL)
