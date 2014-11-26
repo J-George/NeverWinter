@@ -9,6 +9,50 @@
 #define COLOR_BLUE	"\x1b[34m"
 #define COLOR_RESET	"\x1b[0m" 
 
+char *command1[] = { "/bin/ls", "-al", "/", 0 };
+char *command2[] = { "/usr/bin/tr", "a-z", "A-Z", 0 };
+
+void pipeIn(int command[])
+{
+	int pid = fork();
+	if (pid  == 0) //child
+	{
+		dup2(command[1],1);
+		close(command[0]);
+		execvp(command1[0], command1);
+		
+	}
+	if (pid < 0)
+	{
+		printf("fork error");
+		exit(1);
+	}
+	if (pid > 0)
+	{
+		wait(NULL);
+	}
+}
+
+void pipeOut(int command[])
+{
+	int pid = fork();
+	if (pid == 0) //child
+	{
+		dup2(command[0],0);
+		close(command[1]);
+		execvp(command2[0], command2);
+		
+	}
+	if (pid < 0)
+	{
+		printf("fork error");
+		exit(1);
+	}
+	if (pid > 0) //parent
+	{
+		wait(NULL);
+	}
+}
 int main(int argc, char* argv[], char* envp[])
 {
 
@@ -66,9 +110,16 @@ int main(int argc, char* argv[], char* envp[])
 			pipeSearch = strchr(parameters[i],piping);
 			if (pipeSearch!= NULL)
 			{
-				pipingPosition[j] = i;
-				printf("| in position %d\n", pipingPosition[j]);
-				isPiping = true;
+				//pipingPosition[j] = i;
+				//printf("| in position %d\n", pipingPosition[j]);
+				//isPiping = true;
+			
+				int command[2];
+				pipe(command);
+				pipeIn(command);
+				pipeOut(command);
+				close(command[0]);
+				close(command[1]);
 				j++;
 			}
 			redirectionSearch = strchr(parameters[i],redirection);
