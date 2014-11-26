@@ -54,7 +54,7 @@ int main(int argc, char* argv[], char* envp[])
 		parameterCount = 0;
 		
 		//Display and read the message
-		int reg;
+/*		int reg;
 		c = readline(COLOR_BLUE"[BLUE_SHELL  ]:- "COLOR_RESET);
 		reg = strcmp(c,"");
 		while (reg == 0)
@@ -64,7 +64,7 @@ int main(int argc, char* argv[], char* envp[])
 			if (reg != 0)
 			break;
 		}
-		add_history(c);
+		add_history(c);*/
 
         	//Store every word as an array of strings to parse later
 		cptr = strtok(c, " ");
