@@ -56,7 +56,16 @@ int main(int argc, char* argv[], char* envp[])
 			parameters[z] = NULL;
 		}
 		parameterCount = 0;
-
+		
+		//Exiting out of the shell		
+		int ret;
+		ret = strcmp(parameters[0],"exit");
+		if(ret == 0)
+		{
+			printf("\nLog-out time: %s\n",asctime(timeinfo));
+			exit(0);
+		}
+	
 		//Display and read the message
 		int reg;
 		//Current working directory display
@@ -102,15 +111,7 @@ int main(int argc, char* argv[], char* envp[])
 				s++;
 			}		
 		}
-		
-		//Exiting out of the shell		
-		int ret;
-		ret = strcmp(parameters[0],"exit");
-		if(ret == 0)
-		{
-			printf("\nLog-out time: %s\n",asctime(timeinfo));
-			exit(0);
-		}
+
 
 		//Fork
 		int rc = fork();
