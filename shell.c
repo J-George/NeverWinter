@@ -56,15 +56,6 @@ int main(int argc, char* argv[], char* envp[])
 			parameters[z] = NULL;
 		}
 		parameterCount = 0;
-		
-		//Exiting out of the shell		
-		int ret;
-		ret = strcmp(parameters[0],"exit");
-		if(ret == 0)
-		{
-			printf("\nLog-out time: %s\n",asctime(timeinfo));
-			exit(0);
-		}
 	
 		//Display and read the message
 		int reg;
@@ -100,6 +91,14 @@ int main(int argc, char* argv[], char* envp[])
 			cptr = strtok(NULL, " ");	
 	 	}
 
+		//Exiting out of the shell		
+		int ret;
+		ret = strcmp(parameters[0],"exit");
+		if(ret == 0)
+		{
+			printf("\nLog-out time: %s\n",asctime(timeinfo));
+			exit(0);
+		}
 	
 		//debugging.. set to 1 to see all the arguments on each seperate line
 		if(0)
