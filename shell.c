@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -41,6 +42,8 @@ int main(int argc, char* argv[], char* envp[])
 
 	printf("\nLog-in time: %s",asctime(timeinfo));
 	char* pegpoint = NULL;
+	//char* pegsource = NULL;
+	//bool movpath = false;
 	
         while(1)
 	{
@@ -110,7 +113,45 @@ int main(int argc, char* argv[], char* envp[])
 				s++;
 			}		
 		}
-
+		
+		//Special feature: Pegging
+		int pegVal;
+		pegVal = strcmp(parameters[0],"peg");
+		if(pegVal == 0)
+		{
+			char dir[1024];
+			pegpoint = getcwd(dir,sizeof(dir));
+			continue;
+		}
+		pegVal = strcmp(parameters[0],"rmpeg");
+		if(pegVal == 0)
+		{
+			if(pegpoint == NULL)
+			{
+				printf("No peg in place to remove. Type \"peg\" to place holder.\n");
+				continue;
+			}
+			pegpoint = NULL;
+			continue;
+		}
+		pegVal = strcmp(parameters[0],"mv2peg");
+		if(pegVal ==0)
+		{
+			//printf("%s\n",pegpoint);
+			if(pegpoint == NULL)
+			{
+				printf("No peg set in place to move to. Type \"peg\" to place holder.\n");
+				continue;
+			}
+			else
+			{
+				//char* destination = pegpoint;
+				//const char* source = 
+				//printf("%s - %s\n",parameters[1],destination);
+				//execve("/bin/mv",&parameters[1],destination);
+				continue;
+			}
+		}
 
 		//Fork
 		int rc = fork();
@@ -137,55 +178,9 @@ int main(int argc, char* argv[], char* envp[])
 				//Execute the program from bash, or by itself
 				//Then we concancate the program name to /bin/
 				//If the program name is ls, then it'll be /bin/ls
-		                	
-					//Special feature: Pegging
-					int pegVal;
-					pegVal = strcmp(parameters[0],"peg");
-					if(pegVal == 0)
-					{
-						char dir[1024];
-						pegpoint = getcwd(dir,sizeof(dir));
-						continue;
-					}
-					pegVal = strcmp(parameters[0],"rmpeg");
-					if(pegVal == 0)
-					{
-						if(pegpoint == NULL)
-						{
-							printf("No peg in place to remove. Type \"peg\" to place holder.\n");
-							continue;
-						}
-						pegpoint = NULL;
-						continue;
-					}
-					pegVal = strcmp(parameters[0],"mv2peg");
-					if(pegVal ==0)
-					{
-						//printf("%s\n",pegpoint);
-						if(pegpoint == NULL)
-						{
-							printf("No peg set in place to move to. Type \"peg\" to place holder.\n");
-							continue;
-						}
-						int s;
-						int counter = 0;
-						int check;
-						for(s=0;s<=strlen(pegpoint);s++)
-							{
-								printf("%c",pegpoint[s]);
-								check = strncmp(&pegpoint[s],"/",1);
-								if(check ==0)
-									counter++; 	
-							}
-						printf("\nTotal /'s: %d\n",counter);
-						char mover[128];
-						strcat(mover,"../..");
-						continue;
-					}
-					
-					
+		                			
 					//Special Case for cd
-					int cd = strcmp(parameters[i],"cd");
+					int cd = strcmp(parameters[0],"cd");
 					if(cd == 0)
 					{	
 						change = parameters[1];
@@ -238,6 +233,3 @@ int main(int argc, char* argv[], char* envp[])
 			
 	}
 }
-
-
-
