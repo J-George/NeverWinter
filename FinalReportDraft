@@ -3,10 +3,49 @@ created by Marc Hosang, Justin George, Daniel Comeau and Priom Chowdhury.
 Originally we had a fifth member, Nikhil Sharma, however well along into the month of November,
 he stopped responding, taking part or contributing in any way, shape or form and as a result,
 we moved along without him with only minor setbacks.
-Initially there was some confusion about what exactly it was we needed to create, and as a result, once it became apparent, we began work toward the end of October. As per your suggestion, we employed the use of Github, which turned out to be immensely useful once we got a handle on how to use it correctly. Early on we decided to implement five features into our shell, assigning each feature to a member of the group. These features were originally: input history, tab completion, wildcard implementation, piping and redirection.
-To get the core aspect of the shell running, that is the proper handling of the fork and execve commands, the group met several times utilizing both Github for independent work, as well as the on-campus CS lab for group efforts. Problems at this stage were mainly with the tokenizing of the user-input. Originally, we manually stored the input using a for loop and the getchar command, into a character array. From there, through trial and error, we managed to tokenize the input correctly storing each string in a char* array. It was only several weeks later into development when we learned that we were allowed to use the ReadLine and NCurses libraries, though the latter ended up never being used in the final version. We later employed the use of the ReadLine library which allowed us to more easily implement tab completion and user input history.
-By the time of the first report’s due date, we had gotten the execution aspect of the shell running fine, at this point with the original input storing method. For history, we originally intended to have an array store the last 20 commands whilst implementing keypress detection to help the user move through the history itself. This proved to be a good idea as the array that was implemented managed to store the commands very well, however we hit a bump in the road due to the difficulty of implementing actions on keypress without the conio library for Windows or the ncurses library for Unix. It was at this point the readline library was implemented and both tab completion and input history, with some tweaking, were also successfully implemented.
-Redirection was tackled in a separate code file to the main shell, in order to work out the rough edges of the implementation before integrating it in. We successfully managed to get the redirection working in that file, “redir.c” in the repository. Unfortunately the trouble came when trying to implement the code into the shell as it was, with the original parsing method. With piping, the same sort of problem occurred, in that, we were able to successfully pipe two strings of full commands, however we were unable to implement it in the shell using the tokenized user-input. Another issue that we ran into with piping was that although the code was there, as can be seen in “shell2.c”, the piping would never return to the shell and as a result get stuck at the end of execution of the second command.
-Wildcard implementation started early on as soon as the core of the shell was completed, however the task proved to be immensely difficult and as a result was abandoned in favour of the other more important features as we realized at this point that we were one group member down. 
-Though several of our features we not able to be fully implemented, Spiky Blue Shell compiles, as of this writing, with little to no warnings, and no errors. The shell itself is responsive, accepted full lines of user input and is wonderfully aesthetically pleasing to the eye. In addition to the readline library, we also utilized stdio.h for the standard input and output, that is the printf’s and in early versions, getchar as well as for colouring output. We also used stdlib.h for general functions such as exit and for memory allocation. Sys/wait.h was used only to employ a wait in the parent process while the child process was forked and run.  The final implemented library was fcntl.h which let us get some extra functions for file control in redirection and piping.
-
+Initially there was some confusion about what exactly it was we needed to create, and as a result, once it became apparent, 
+we began work toward the end of October. As per your suggestion, we employed the use of Github, which turned out to be
+immensely useful once we got a handle on how to use it correctly. Early on we decided to implement five features into
+our shell, assigning each feature to a member of the group. These features were originally: input history, tab completion,
+wildcard implementation, piping and redirection.
+To get the core aspect of the shell running, that is the proper handling of the fork and execve commands, the group met
+several times utilizing both Github for independent work, as well as the on-campus CS lab for group efforts. Problems at 
+this stage were mainly with the tokenizing of the user-input. Originally, we manually stored the input using a for loop
+and the getchar command, into a character array. From there, through trial and error, we managed to tokenize
+the input correctly storing each string in a char* array. It was only several weeks later into development when we learned
+that we were allowed to use the ReadLine and NCurses libraries, though the latter ended up never being used in the final 
+version. We later employed the use of the ReadLine library which allowed us to more easily implement tab completion and user 
+input history.
+By the time of the first report’s due date, we had gotten the execution aspect of the shell running fine, at this point
+with the original input storing method. For history, we originally intended to have an array store the last 20 commands
+whilst implementing keypress detection to help the user move through the history itself. This proved to be a good idea as
+the array that was implemented managed to store the commands very well, however we hit a bump in the road due to the
+difficulty of implementing actions on keypress without the conio library for Windows or the ncurses library for Unix. It was
+at this point the readline library was implemented and both tab completion and input history, with some tweaking, were also
+successfully implemented.
+Redirection was tackled in a separate code file to the main shell, in order to work out the rough edges of the implementation
+before integrating it in. We successfully managed to get the redirection working in that file, “redir.c” in the repository.
+Unfortunately the trouble came when trying to implement the code into the shell as it was, with the original parsing method.
+With piping, the same sort of problem occurred, in that, we were able to successfully pipe two strings of full commands,
+however we were unable to implement it in the shell using the tokenized user-input. Another issue that we ran into with
+piping was that although the code was there, as can be seen in “shell2.c”, the piping would never return to the shell and
+as a result get stuck at the end of execution of the second command.
+Wildcard implementation started early on as soon as the core of the shell was completed, however the task proved to be 
+immensely difficult and as a result was abandoned in favour of the other more important features as we realized at this point
+that we were one group member down. 
+Though several of our features we not able to be fully implemented, Spiky Blue Shell compiles, as of this writing, with little
+to no warnings, and no errors. The shell itself is responsive, accepted full lines of user input and is
+wonderfully aesthetically pleasing to the eye. In addition to the readline library, we also utilized stdio.h for the standard
+input and output, that is the printf’s and in early versions, getchar as well as for colouring output. We also used stdlib.h
+for general functions such as exit and for memory allocation. Sys/wait.h was used only to employ a wait in the parent process
+while the child process was forked and run.  The final implemented library was fcntl.h which let us get some extra functions
+for file control in redirection and piping. To add a cherry to the top we thought it would be best to redo the aesthtics of 
+the shell. So, now it shows the current directory on one line as well as the prompt. Commands are seperated so that 
+inputs are not confused. They wouldnt be anyway since the prompt color and the input color should be different. We also
+included the timed logged in and time logged out at the begginning and at the end of the shell. We also tried to include a 
+feature called pegging.(We came up with the name..) In short, you can go do a directory, type in the word peg. and the 
+directory name comes in magenta on the opposide side of the prompt. once pegged, you can go to any other file or folder and
+type in mv2peg, and the file should move to the folder without having to remember the exact directory path in your mind.
+I also wanted peg to have a select all command. but that has not been implemented yet. Also the peg doesnt work perfectly.. 
+the only line that needs to be modified is the execve to make it work, and it should be fine. Beside that, the shell
+is functional.
