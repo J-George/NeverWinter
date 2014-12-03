@@ -140,20 +140,14 @@ int main(int argc, char* argv[], char* envp[])
 				printf("No peg set in place to move to. Type \"peg\" to place holder.\n");
 				continue;
 			}
-			int s;
-			int counter = 0;
-			int check;
-			for(s=0;s<=strlen(pegpoint);s++)
-				{
-					printf("%c",pegpoint[s]);
-					check = strncmp(&pegpoint[s],"/",1);
-					if(check ==0)
-						counter++; 	
-				}
-			printf("\nTotal /'s: %d\n",counter);
-			char mover[128];
-			strcat(mover,"../..");
-			continue;
+			else
+			{
+				//char* destination = pegpoint;
+				//const char* source = 
+				//printf("%s - %s\n",parameters[1],destination);
+				//execve("/bin/mv",&parameters[1],destination);
+				continue;
+			}
 		}
 
 		//Fork
